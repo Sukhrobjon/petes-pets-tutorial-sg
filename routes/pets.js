@@ -6,6 +6,14 @@ module.exports = (app) => {
 
   // INDEX PET => index.js
 
+  // SEARCH PET
+app.get('/search', (req, res) => {
+  term = new RegExp(req.query.term, 'i')
+  
+  Pet.find({'name': term }).exec((err, pets) => {
+    res.render('pets-index', { pets: pets });
+  })
+});
   // NEW PET
   app.get('/pets/new', (req, res) => {
     res.render('pets-new');
