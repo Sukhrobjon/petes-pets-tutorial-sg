@@ -14,7 +14,8 @@ module.exports = (app) => {
     const page = req.query.page || 1
 
     Pet.paginate({}, {page: page}).then((results) => {
-      res.render('pets-index', { pets: results.docs });    
+      res.render('pets-index', { pets: results.docs, pagesCount: results.pages,
+      currentPage: page });    
     });
   });
 }
