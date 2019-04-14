@@ -7,16 +7,23 @@ module.exports = (app) => {
   // INDEX PET => index.js
 
   // SEARCH PET
-  app.get('/search', (req, res) => {
-    term = new RegExp(req.query.term, 'i')
-    
-    Pet.find({ $or:[
-        {'name': term},
-        {'species': term} 
-      ]}).exec((err, pets) => {
-      res.render('pets-index', { pets: pets });
-    })
-  });
+    app.get('/search', (req, res) => {
+
+      const term = new RegExp(req.query.term, 'i')
+
+      const page = req.query.page || 1
+      Pet.paginate(
+        {
+          $or: [
+            { 'name': term },
+            { 'species': term }
+          ]
+        },
+        { page: page }).then((results) => {
+          res.render('pets-index', { pets: results.docs, pagesCount: results.pages,
+            currentPage: page, term: req.query.term });
+        });
+    });
   // NEW PET
   app.get('/pets/new', (req, res) => {
     res.render('pets-new');
