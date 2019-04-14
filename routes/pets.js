@@ -7,23 +7,23 @@ module.exports = (app) => {
   // INDEX PET => index.js
 
   // SEARCH PET
-    app.get('/search', (req, res) => {
+  app.get('/search', (req, res) => {
 
-      const term = new RegExp(req.query.term, 'i')
+    const term = new RegExp(req.query.term, 'i')
 
-      const page = req.query.page || 1
-      Pet.paginate(
-        {
-          $or: [
-            { 'name': term },
-            { 'species': term }
-          ]
-        },
-        { page: page }).then((results) => {
-          res.render('pets-index', { pets: results.docs, pagesCount: results.pages,
-            currentPage: page, term: req.query.term });
-        });
-    });
+    const page = req.query.page || 1
+    Pet.paginate(
+      {
+        $or: [
+          { 'name': term },
+          { 'species': term }
+        ]
+      },
+      { page: page }).then((results) => {
+        res.render('pets-index', { pets: results.docs, pagesCount: results.pages,
+          currentPage: page, term: req.query.term });
+      });
+  });
   // NEW PET
   app.get('/pets/new', (req, res) => {
     res.render('pets-new');
@@ -35,10 +35,11 @@ module.exports = (app) => {
 
     pet.save()
       .then((pet) => {
-        res.redirect(`/pets/${pet._id}`);
+        res.send({ pet: pet });
       })
       .catch((err) => {
-        // Handle Errors
+        // STATUS OF 400 FOR VALIDATIONS
+        res.status(400).send(err.errors);
       }) ;
   });
 
