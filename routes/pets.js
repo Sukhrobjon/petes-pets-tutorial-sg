@@ -30,18 +30,32 @@ module.exports = (app) => {
   });
 
   // CREATE PET
-  app.post('/pets', (req, res) => {
+  // app.post('/pets', (req, res) => {
+  //   var pet = new Pet(req.body);
+
+  //   pet.save()
+  //     .then((pet) => {
+  //       res.send({ pet: pet });
+  //     })
+  //     .catch((err) => {
+  //       // STATUS OF 400 FOR VALIDATIONS
+  //       res.status(400).send(err.errors);
+  //     }) ;
+  // });
+
+  // CREATE PET (ASYNC)
+  app.post('/pets', async (req, res) => {
     var pet = new Pet(req.body);
 
-    pet.save()
-      .then((pet) => {
-        res.send({ pet: pet });
-      })
-      .catch((err) => {
-        // STATUS OF 400 FOR VALIDATIONS
-        res.status(400).send(err.errors);
-      }) ;
+    try {
+      var pet = await pet.save();
+      res.send({ pet });
+    } catch (err) {
+      res.status(400).send(err.errors);
+    }
   });
+
+  
 
   // SHOW PET
   app.get('/pets/:id', (req, res) => {

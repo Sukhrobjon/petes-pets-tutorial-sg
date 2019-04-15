@@ -10,7 +10,9 @@ if (document.querySelector('#new-pet')) {
 
         axios.post('/pets', pet)
             .then(function (response) {
-                window.location.replace(`/pets/${response.data._id}`);
+                console.log(response.data)
+                window.location.replace(`/pets/${response.data.pet._id}`);
+                
             })
             .catch(function (error) {
                 const alert = document.getElementById('alert')
