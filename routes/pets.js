@@ -37,56 +37,67 @@ module.exports = (app) => {
     res.render('pets-new');
   });
 
+
   // // CREATE PET
-  // app.post('/pets', (req, res) => {
+  // app.post('/pets', upload.single('avatar'), (req, res, next) => {
   //   var pet = new Pet(req.body);
+  //   pet.save(function (err) {
+  //     if (err) {
+  //       return res.status(400).send({
+  //         err: err
+  //       })
+  //     };
+  //     if (req.file) {
+  //       client.upload(req.file.path, {}, function (err, versions, meta) {
+        
+  //         versions.forEach(function (image) {
+  //           var urlArray = image.url.split('-');
+  //           urlArray.pop();
+  //           var url = urlArray.join('-');
+  //           pet.avatarUrl = url;
+  //           pet.save();
+  //         });
 
-  //   pet.save()
-  //     .then((pet) => {
+  //         res.send({ pet: pet });
+  //       });
+  //     } else {
   //       res.send({ pet: pet });
-  //     })
-  //     .catch((err) => {
-  //       // STATUS OF 400 FOR VALIDATIONS
-  //       res.status(400).send(err.errors);
-  //     }) ;
-  // });
+  //     }
+  //   })
+  // })
+
+
   // CREATE PET
-  app.post('/pets', upload.single('avatar'), (req, res, next) => {
-    var pet = new Pet(req.body);
-    pet.save(function (err) {
-      if (req.file) {
-        client.upload(req.file.path, {}, function (err, versions, meta) {
-          if (err) { return res.status(400).send({ err: err }) };
+    app.post('/pets', upload.single('avatar'), async(req, res, next) => {
+        console.log(req.file)
+        var pet = new Pet(req.body);
+        pet.save(function (err) {
+            if (err) {
+                console.log(err)
+                return res.status(400).send({ err })
+            };
+            if (req.file) {
+                client.upload(req.file.path, {}, function (err, versions, meta) {
+                    // STATUS OF 400 FOR VALIDATIONS
+                    if (err) {
+                        console.log(err)
+                        return res.status(400).send({ err })
+                    };
 
-          versions.forEach(function (image) {
-            var urlArray = image.url.split('-');
-            urlArray.pop();
-            var url = urlArray.join('-');
-            pet.avatarUrl = url;
-            pet.save();
-          });
+                    let imgUrl = versions[0].url.split('-');
+                    imgUrl.pop();
+                    imgUrl = imgUrl.join('-');
+                    pet.avatarUrl = imgUrl;
+                    pet.save();
 
-          res.send({ pet });
+                    res.send({ pet });
+                });
+            } else {
+                res.send({ pet });
+            }
         });
-      } else {
-        res.send({ pet });
-      }
-    })
-  })
+    });
 
-  // CREATE PET (ASYNC)
-  // app.post('/pets', async (req, res) => {
-  //   var pet = new Pet(req.body);
-
-  //   try {
-  //     var pet = await pet.save();
-  //     res.send({ pet });
-  //   } catch (err) {
-  //     res.status(400).send(err.errors);
-  //   }
-  // });
-
-  
 
   // SHOW PET
   app.get('/pets/:id', (req, res) => {
