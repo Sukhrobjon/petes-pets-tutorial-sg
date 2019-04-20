@@ -38,35 +38,6 @@ module.exports = (app) => {
   });
 
 
-  // // CREATE PET
-  // app.post('/pets', upload.single('avatar'), (req, res, next) => {
-  //   var pet = new Pet(req.body);
-  //   pet.save(function (err) {
-  //     if (err) {
-  //       return res.status(400).send({
-  //         err: err
-  //       })
-  //     };
-  //     if (req.file) {
-  //       client.upload(req.file.path, {}, function (err, versions, meta) {
-        
-  //         versions.forEach(function (image) {
-  //           var urlArray = image.url.split('-');
-  //           urlArray.pop();
-  //           var url = urlArray.join('-');
-  //           pet.avatarUrl = url;
-  //           pet.save();
-  //         });
-
-  //         res.send({ pet: pet });
-  //       });
-  //     } else {
-  //       res.send({ pet: pet });
-  //     }
-  //   })
-  // })
-
-
   // CREATE PET
     app.post('/pets', upload.single('avatar'), async(req, res, next) => {
         console.log(req.file)
@@ -129,5 +100,11 @@ module.exports = (app) => {
     Pet.findByIdAndRemove(req.params.id).exec((err, pet) => {
       return res.redirect('/')
     });
+  });
+
+  // PET PURCHASE WITH STRIPE
+  app.post('/pets/:id/purchase', (req, res) => {
+    console.log("purchased")
+    console.log(`purchase body: ${req.body}`);
   });
 }
