@@ -53,6 +53,23 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
+
+// auth with our mailgun API key and domain
+const auth = {
+  auth: {
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.EMAIL_DOMAIN
+  }
+}
+
+// create a mailer
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 // SEND EMAIL
 const user = {
   email: 'sukhrobjon.golibboev@students.makeschool.com',
@@ -74,23 +91,5 @@ nodemailerMailgun.sendMail({
 }).catch(err => {
   console.log('Error: ' + err);
 });
-
-// auth with our mailgun API key and domain
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_API_KEY,
-    domain: process.env.EMAIL_DOMAIN
-  }
-}
-
-// create a mailer
-const nodemailerMailgun = nodemailer.createTransport(mg(auth));
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
 
 module.exports = app;
