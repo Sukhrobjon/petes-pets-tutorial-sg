@@ -27,3 +27,5 @@
 // I think my full text search isnt working properly, need more test 
 // it was working when I used simple text search now. not sure if it 
 // is working right
+
+// TODO: Tests are failing work with Braus 
