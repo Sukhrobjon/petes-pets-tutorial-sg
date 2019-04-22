@@ -11,9 +11,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 
-// require our mailgun dependencies
-const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
 
 const app = express();
 
@@ -54,22 +51,13 @@ app.use((err, req, res, next) => {
 });
 
 
-// auth with our mailgun API key and domain
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_API_KEY,
-    domain: process.env.EMAIL_DOMAIN
-  }
-}
-
-// create a mailer
-const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
 // SEND EMAIL
 const user = {
   email: 'sukhrobjon.golibboev@students.makeschool.com',
@@ -77,19 +65,5 @@ const user = {
   age: '23'
 };
 
-nodemailerMailgun.sendMail({
-  from: 'no-reply@example.com',
-  to: user.email, // An array if you have multiple recipients.
-  subject: 'Hey you, awesome!',
-  template: {
-    name: 'email.handlebars',
-    engine: 'handlebars',
-    context: user
-  }
-}).then(info => {
-  console.log('Response: ' + info);
-}).catch(err => {
-  console.log('Error: ' + err);
-});
 
 module.exports = app;
