@@ -12,3 +12,18 @@
 // Save the image URL into the database[Done]
 // Display the image using the URL[Done]
 
+// TODO: One
+// I ran into a problem when i tried to drop indexes of pets on db
+// > use petes-pets
+// switched to db petes - pets >
+//     db.pets.dropIndex('animal_text_color_text_pattern_text_size_text'); {
+//     "ok": 0,
+//     "errmsg": "index not found with name [animal_text_color_text_pattern_text_size_text]",
+//     "code": 27,
+//     "codeName": "IndexNotFound"
+// }
+
+// TODO: Two [check with someone]
+// I think my full text search isnt working properly, need more test 
+// it was working when I used simple text search now. not sure if it 
+// is working right
