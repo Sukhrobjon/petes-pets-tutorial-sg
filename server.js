@@ -18,7 +18,7 @@ const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/petes-pets');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/petes-pets', {
   useNewUrlParser: true
-});
+}, err => err ? console.log(err.message) : null);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
