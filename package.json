@@ -22,7 +22,7 @@
     "nodemailer": "^6.1.1",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemon": "^1.19.4",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "s3-uploader": "^2.0.3",
     "serve-favicon": "~2.4.5",
     "stripe": "^5.3.0"
